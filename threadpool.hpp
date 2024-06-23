@@ -152,5 +152,4 @@ private:
         */
         void worker_thread(unsigned int _my_index);
     };
-    }
 };
