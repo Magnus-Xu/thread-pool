@@ -4,16 +4,14 @@ namespace ThreadPool
 {
     join_threads::join_threads(std::vector<std::thread>& _threads) : threads(_threads) {}
 
-    join_threads::~join_threads()
-    {
+    join_threads::~join_threads() {
         for (auto& thread : threads) {
             if (thread.joinable())
                 thread.join();
         }
     }
 
-    thread_pool::thread_pool(const unsigned int thread_num) : done(false), joiner(threads)
-    {
+    thread_pool::thread_pool(const unsigned int thread_num) : done(false), joiner(threads) {
         // maximium thread number
         unsigned int const thread_count = std::min(std::thread::hardware_concurrency(), thread_num);
         try {
@@ -27,13 +25,11 @@ namespace ThreadPool
         }
     }
 
-    thread_pool::~thread_pool()
-    {
+    thread_pool::~thread_pool() {
         done = true;
     }
 
-    void thread_pool::run_pending_task()
-    {
+    void thread_pool::run_pending_task() {
         std::function<void()> task;
 
         // local_queue before global_queue
@@ -45,8 +41,7 @@ namespace ThreadPool
         }
     }
 
-    void thread_pool::worker_thread(unsigned int _my_index)
-    {
+    void thread_pool::worker_thread(unsigned int _my_index) {
         while (!done) {
             run_pending_task();
         }
